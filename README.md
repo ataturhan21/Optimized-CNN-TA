@@ -1,18 +1,26 @@
-------------------------------------------------------------------------
-
-<div align="center">
-
-[![Sourcery](https://img.shields.io/badge/Sourcery-enabled-brightgreen)](https://sourcery.ai)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-
-</div>
-
-------------------------------------------------------------------------
-
 # Optimized-CNN-TA
 
-It is a Jupyter notebook that compares different trading strategies using technical analysis, machine learning, and deep learning methods.
+A notebook-based research project comparing trading strategies built with technical analysis, machine learning, and deep learning.
 
-You can read the article at: https://drive.google.com/file/d/1s4Az5HqdqpjbkPw00iGHiUh8bYuAJOHp/view?usp=share_link
+## Explore the project
+
+| Resource | Contents |
+| --- | --- |
+| [Main notebook](notebooks/CNN-TA.ipynb) | The experiment workflow |
+| [Source modules](src/) | Data preparation, feature engineering, neural networks, strategies, and backtesting |
+| [Saved models](models/) | CNN, GRU, LSTM, and MLP model files |
+| [Research article](https://drive.google.com/file/d/1s4Az5HqdqpjbkPw00iGHiUh8bYuAJOHp/view?usp=share_link) | The accompanying write-up |
+
+Start with the notebook to inspect the experiments, then follow the source modules for implementation details.
+
+## Environment
+
+[`requirements.txt`](requirements.txt) records the original development environment. It includes a machine-specific Windows path and platform-specific dependencies, so it needs adaptation before installation on another machine.
+
+The bundled `TA_Lib-0.4.24-cp37-cp37m-win_amd64.whl` targets CPython 3.7 on 64-bit Windows. Use an appropriate TA-Lib installation for your environment.
+
+Review the notebook's data and model paths before running its cells. The repository preserves the research implementation; this documentation update does not establish compatibility with current package versions or reproduce the experiment results.
+
+## License
+
+[GNU General Public License v3.0](LICENSE).
