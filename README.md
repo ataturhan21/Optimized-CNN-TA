@@ -21,6 +21,16 @@ The bundled `TA_Lib-0.4.24-cp37-cp37m-win_amd64.whl` targets CPython 3.7 on 64-b
 
 Review the notebook's data and model paths before running its cells. The repository preserves the research implementation; this documentation update does not establish compatibility with current package versions or reproduce the experiment results.
 
+## Feature preprocessing checks
+
+Feature scaling is fitted on the training period. The `Label` column is kept separate from numeric features so a training period missing a class cannot change the meanings of hold, buy, and sell labels.
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+These checks require NumPy, pandas, and scikit-learn. They verify label preservation, training-only scaling, input immutability, and explicit errors for unsupported scaling methods without running TensorFlow or a backtest.
+
 ## License
 
 [GNU General Public License v3.0](LICENSE).

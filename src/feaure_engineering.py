@@ -51,28 +51,17 @@ def transform():
 
 
 def scaling(data, split_index: int, method: str = "MaxAbs", seed=42):
+    """Fit feature scaling on the training period while preserving class labels."""
     np.random.seed(seed)
-    train_data = data.iloc[:split_index]
-    test_data = data.iloc[split_index:]
+    if method != "MaxAbs":
+        raise ValueError(f"Unsupported scaling method: {method}")
 
-    if method == "MaxAbs":
-        scaler = MaxAbsScaler()
-    scaler.fit(train_data)
-    scaled_train = scaler.transform(train_data)
-    scaled_test = scaler.transform(test_data)
-    train_data = pd.DataFrame(
-        data=scaled_train,
-        columns=train_data.columns,
-        index=train_data.index,
+    features = data.drop(columns=["Label"])
+    scaler = MaxAbsScaler()
+    scaler.fit(features.iloc[:split_index])
+    scaled = pd.DataFrame(
+        scaler.transform(features), columns=features.columns, index=data.index
     )
-    train_data["Label"] = train_data["Label"] * 2
-    train_data["Label"] = train_data["Label"].astype("int")
-    test_data = pd.DataFrame(
-        data=scaled_test,
-        columns=test_data.columns,
-        index=test_data.index,
-    )
-    test_data["Label"] = test_data["Label"] * 2
-    test_data["Label"] = test_data["Label"].astype("int")
+    scaled["Label"] = data["Label"]
+    return scaled.reindex(columns=data.columns)
 
-    return pd.concat([train_data, test_data])
