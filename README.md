@@ -29,7 +29,7 @@ Feature scaling is fitted on the training period. The `Label` column is kept sep
 python -m unittest discover -s tests -v
 ```
 
-These checks require NumPy, pandas, and scikit-learn. They verify label preservation, training-only scaling, input immutability, and explicit errors for unsupported scaling methods without running TensorFlow or a backtest.
+These checks require NumPy, pandas, and scikit-learn. They verify label preservation, training-only scaling, input immutability, and explicit errors for unsupported scaling methods. Image-window checks also verify label alignment when `Label` is not the final column, trailing-window order, and explicit shape errors. The tests do not run TensorFlow or a backtest.
 
 ## License
 

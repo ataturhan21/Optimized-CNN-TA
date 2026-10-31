@@ -571,73 +571,39 @@ def create_all_indicators_in_talib(
 
 
 def create_2d_data(datas: list, length: int):
-    matrix_datas = []
-    for data in datas:
-        df = data[0].drop(columns=["Label"])
-        df_matrix_train = pd.DataFrame(
-            index=df.iloc[length - 1 :].index,
-        )
-        df_matrix_train["Image"] = [np.zeros((length, length))] * df.iloc[
-            length - 1 :
-        ].shape[0]
-
-        for j in range(df_matrix_train.shape[0]):
-            matrix = df.iloc[j : j + length].values.reshape((length, length, -1))
-            df_matrix_train.iloc[j, 0] = matrix
-        df_matrix_train["Label"] = data[0].iloc[length - 1 :, -1]
-
-        df = data[1].drop(columns=["Label"])
-        df_matrix_test = pd.DataFrame(
-            index=df.iloc[length - 1 :].index,
-        )
-        df_matrix_test["Image"] = [np.zeros((length, length))] * df.iloc[
-            length - 1 :
-        ].shape[0]
-
-        for j in range(df_matrix_test.shape[0]):
-            matrix = df.iloc[j : j + length].values.reshape((length, length, -1))
-            df_matrix_test.iloc[j, 0] = matrix
-        df_matrix_test["Label"] = data[1].iloc[length - 1 :, -1]
-
-        matrix_datas.append((df_matrix_train, df_matrix_test))
-
-    X_train_list = []
-    y_train_list = []
-    X_test_list = []
-    y_test_list = []
-
-    for matrix_data in matrix_datas:
-        X_train = []
-        y_train = []
-        X_test = []
-        y_test = []
-
-        for j in range(matrix_data[0].shape[0]):
-            X_train.append(matrix_data[0].iloc[j, 0])
-            y_train.append(
-                tf.keras.utils.to_categorical(matrix_data[0].iloc[j, 1], num_classes=3)
-            )
-        X_train, y_train = np.array(X_train), np.array(y_train)
-        X_train = np.reshape(
-            X_train, newshape=(X_train.shape[0], X_train.shape[1], X_train.shape[2], 1)
-        )
-        X_train_list.append(X_train)
-        y_train_list.append(y_train)
-
-        for j in range(matrix_data[1].shape[0]):
-            X_test.append(matrix_data[1].iloc[j, 0])
-            y_test.append(matrix_data[1].iloc[j, 1])
-        X_test, y_test = np.array(X_test), np.array(y_test)
-        X_test = np.reshape(
-            X_test, newshape=(X_test.shape[0], X_test.shape[1], X_test.shape[2], 1)
-        )
-        X_test_list.append(X_test)
-        y_test_list.append(y_test)
-
-    return [
-        [X_train_list[i], y_train_list[i], X_test_list[i], y_test_list[i]]
-        for i in range(len(datas))
-    ]
+    """Create trailing square feature windows aligned with each window's last label."""
+    if isinstance(length, bool) or not isinstance(length, int) or length < 1:
+        raise ValueError("length must be a positive integer.")
+    prepared = []
+    for train_frame, test_frame in datas:
+        train_columns = train_frame.drop(columns=["Label"]).columns
+        test_columns = test_frame.drop(columns=["Label"]).columns
+        if not train_columns.equals(test_columns):
+            raise ValueError("Training and test feature columns must have the same order.")
+        arrays = []
+        for frame in (train_frame, test_frame):
+            features = frame.drop(columns=["Label"])
+            if features.shape[1] != length:
+                raise ValueError("Square windows require length feature columns.")
+            if len(features) < length:
+                raise ValueError("Each split must contain at least length rows.")
+            windows = np.stack([
+                features.iloc[start:start + length].to_numpy()
+                for start in range(len(features) - length + 1)
+            ])[..., np.newaxis]
+            labels = frame["Label"].iloc[length - 1:].to_numpy()
+            if not np.isin(labels, [0, 1, 2]).all():
+                raise ValueError("Labels must use 0 (hold), 1 (buy), or 2 (sell).")
+            arrays.append((windows, labels))
+        train_images, train_labels = arrays[0]
+        test_images, test_labels = arrays[1]
+        prepared.append([
+            train_images,
+            tf.keras.utils.to_categorical(train_labels, num_classes=3),
+            test_images,
+            test_labels,
+        ])
+    return prepared
 
 
 def plot_confusion_matrix(cm, labels, title):
