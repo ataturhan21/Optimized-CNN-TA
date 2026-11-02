@@ -33,4 +33,4 @@ These checks require NumPy, pandas, and scikit-learn. They verify label preserva
 
 ## License
 
-[GNU General Public License v3.0](LICENSE).
+[MIT](LICENSE).
