@@ -19,7 +19,6 @@ from Pattern import (
     longleg_doji,
 )
 from sklearn.cluster import AgglomerativeClustering
-from .configurations import set_random_seed
 
 
 def create_buy_and_hold_predictions(price_length: int):
