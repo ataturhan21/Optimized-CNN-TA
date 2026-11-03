@@ -638,7 +638,7 @@ def fetch_fred_data(start_date: str, end_date: str) -> pd.DataFrame:
     fred_data = pdr.fred.FredReader(
         symbols=fred_codes.values(), start=start_date, end=end_date
     ).read()
-    fred_data.fillna(method="ffill", inplace=True)
+    fred_data = fred_data.ffill()
     fred_data["10-2 Year Yield Difference"] = fred_data["DGS10"] - fred_data["DGS2"]
     fred_data.rename(
         columns={v: k for k, v in fred_codes.items()},
