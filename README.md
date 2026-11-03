@@ -15,7 +15,7 @@ Start with the notebook to inspect the experiments, then follow the source modul
 
 ## Environment
 
-[`requirements.txt`](requirements.txt) records the original development environment. It includes a machine-specific Windows path and platform-specific dependencies, so it needs adaptation before installation on another machine.
+[`requirements.txt`](requirements.txt) records the original development environment. It includes platform-specific dependencies (for example `tensorflow-intel` and `pywinpty` for Windows), so it needs adaptation before installation on another machine.
 
 The bundled `TA_Lib-0.4.24-cp37-cp37m-win_amd64.whl` targets CPython 3.7 on 64-bit Windows. Use an appropriate TA-Lib installation for your environment.
 
