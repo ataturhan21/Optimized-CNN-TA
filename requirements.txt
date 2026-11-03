@@ -32,7 +32,7 @@ Candlestick==0.0.8
 catalogue==2.0.8
 catboost==1.1.1
 celery==5.1.2
-certifi @ file:///C:/b/abs_85o_6fm0se/croot/certifi_1671487778835/work/certifi
+certifi
 cffi==1.15.1
 cfgv==3.3.1
 channels==4.0.0

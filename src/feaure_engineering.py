@@ -9,9 +9,10 @@ def feature_selection(
 ):
     np.random.seed(seed)
     data_after_selection = data.copy(deep=True)
-    if method == "ANOVA":
-        select = SelectKBest(score_func=f_classif, k=selected_feature_count)
-    fitted = select.fit(
+    if method != "ANOVA":
+        raise ValueError(f"Unsupported feature selection method: {method}")
+    select = SelectKBest(score_func=f_classif, k=selected_feature_count)
+    select.fit(
         data_after_selection.drop(columns=["Label"], axis=1),
         data_after_selection["Label"],
     )
@@ -22,32 +23,6 @@ def feature_selection(
         features[j] for j in range(len(features)) if selected_features_boolean[j]
     ]
     return selected_features
-
-
-"""
-def transform():
-    fitted = select.fit(
-        data_after_selection.drop(columns=["Label"]),
-        data_after_selection["Label"],
-    )
-    train_features = fitted.transform(data_after_selection[i][0].iloc[:, :-1])
-    test_features = fitted.transform(data_after_selection[i][1].iloc[:, :-1])
-        train_label = data_after_selection[i][0].Label
-    test_label = data_after_selection[i][1].Label
-
-    data_after_selection[i][0] = pd.DataFrame(
-        data=train_features.astype("float32"),
-        columns=selected_features,
-        index=data_after_selection[i][0].index,
-    )
-    data_after_selection[i][0]["Label"] = train_label
-    data_after_selection[i][1] = pd.DataFrame(
-        data=test_features.astype("float32"),
-        columns=selected_features,
-        index=data_after_selection[i][1].index,
-    )
-    data_after_selection[i][1]["Label"] = test_label
-"""
 
 
 def scaling(data, split_index: int, method: str = "MaxAbs", seed=42):

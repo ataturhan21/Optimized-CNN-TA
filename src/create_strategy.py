@@ -19,7 +19,6 @@ from Pattern import (
     longleg_doji,
 )
 from sklearn.cluster import AgglomerativeClustering
-from .configurations import set_random_seed
 
 
 def create_buy_and_hold_predictions(price_length: int):
@@ -205,7 +204,7 @@ def calculate_support_resistance(df, rolling_wave_length, num_clusters, area):
     )
     # Initialize Agglomerative Clustering
     cluster = AgglomerativeClustering(
-        n_clusters=num_clusters, affinity="euclidean", linkage="ward"
+        n_clusters=num_clusters, linkage="ward"
     )
     cluster.fit_predict(x)
     waves["clusters"] = cluster.labels_
