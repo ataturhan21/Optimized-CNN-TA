@@ -9,9 +9,10 @@ def feature_selection(
 ):
     np.random.seed(seed)
     data_after_selection = data.copy(deep=True)
-    if method == "ANOVA":
-        select = SelectKBest(score_func=f_classif, k=selected_feature_count)
-    fitted = select.fit(
+    if method != "ANOVA":
+        raise ValueError(f"Unsupported feature selection method: {method}")
+    select = SelectKBest(score_func=f_classif, k=selected_feature_count)
+    select.fit(
         data_after_selection.drop(columns=["Label"], axis=1),
         data_after_selection["Label"],
     )
