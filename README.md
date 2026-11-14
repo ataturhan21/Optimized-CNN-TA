@@ -36,6 +36,6 @@ python -m unittest discover -s tests -v
 
 They verify label preservation, training-only scaling, input immutability, and explicit errors for unsupported scaling and feature-selection methods. Image-window checks also verify label alignment when `Label` is not the final column, trailing-window order, and explicit shape errors. Further checks run the support/resistance clustering on synthetic prices and the FRED forward fill with a fake reader. The tests do not download data, run TensorFlow, or run a backtest.
 
-## License
+## Copyright
 
-[MIT](LICENSE).
+© Ata Turhan. All rights reserved. This repository has no open-source license: its code may not be copied, modified or redistributed.
